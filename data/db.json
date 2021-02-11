@@ -1,0 +1,17 @@
+{
+    "blogs":[
+        {
+            "title":"My First Blog",
+            "body":"WHy do we use Aliquip proident nisi adipisicing ullamco Lorem duis commodo aliquip.",
+            "author": "mario",
+            "id":1
+
+        },
+        {
+            "title":"Opening Party!",
+            "body":"WHy do we use Aliquip proident nisi adipisicing ullamco Lorem duis commodo aliquip.",
+            "author": "yoshi",
+            "id":2
+        }
+    ]
+}
