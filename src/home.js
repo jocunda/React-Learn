@@ -4,7 +4,7 @@ import Bloglist from './blogList';
 const Home = () => {
     const [blogs, setblogs] = useState(null);
     const [isPending, setIsPending] = useState(true);
-
+    const [error, setError] = useState(null);
     
   
     const handleDelete = (id) => {
@@ -16,17 +16,20 @@ const Home = () => {
         setTimeout(() => {
             fetch('http://localhost:8000/blogs')
                 .then(res => {
-                    if (res.ok) {
-                    
+                    console.log(res);
+                    if (!res.ok) {
+                        throw Error('could not fetch data');
                 }
                 return res.json()
             })
             .then(data => {
                 setblogs(data);
                 setIsPending(false);
+                setError(null);
             })
-            .catch(err => {
-                console.log(err.message);
+                .catch(err => {
+                    setIsPending(false);
+                setError(err.message);
             })
         }, 1000);
         
@@ -34,6 +37,7 @@ const Home = () => {
 
     return (  
         <div className="home">
+            {error && <div>{error}</div> }
             {isPending && <div>Loading..</div>}
             {blogs && <Bloglist blogs={blogs} title="All BLogs!" handleDelete={handleDelete} />}
                       
