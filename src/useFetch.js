@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 
-const useFecth = (url) => {
+const useFetch = (url) => {
 
     const [data, setData] = useState(null);
     const [isPending, setIsPending] = useState(true);
@@ -9,8 +9,10 @@ const useFecth = (url) => {
 
 
     useEffect(() => {
+        const abortCont = new AbortController();
+
         setTimeout(() => {
-            fetch(url)
+            fetch(url,{signal:abortCont.signal})
                 .then(res => {
                     console.log(res);
                     if (!res.ok) {
@@ -24,14 +26,21 @@ const useFecth = (url) => {
                 setError(null);
             })
                 .catch(err => {
-                    setIsPending(false);
-                setError(err.message);
+                    if (err.name === 'AbortError') {
+                        console.log('fetch aborted')
+                    } else {
+                        setIsPending(false);
+                        setError(err.message);
+                    }
+                    
             })
         }, 100);
+
+        return () => abortCont.abort();
         
     }, [url]);
     
     return{data,isPending,error}
 }
  
-export default useFecth;
+export default useFetch;
